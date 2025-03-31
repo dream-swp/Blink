@@ -1,7 +1,7 @@
 import XCTest
 @testable import Blink
 
-final class BlinkTests: XCTestCase {
+class BlinkTests: XCTestCase {
     func testExample() throws {
         // XCTest Documentation
         // https://developer.apple.com/documentation/xctest
@@ -10,3 +10,5 @@ final class BlinkTests: XCTestCase {
         // https://developer.apple.com/documentation/xctest/defining_test_cases_and_test_methods
     }
 }
+
+
