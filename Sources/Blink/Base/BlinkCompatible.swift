@@ -7,38 +7,37 @@
 
 import SwiftUI
 
-
 /// Data isolation protocol
-public protocol BlinkCompatible { }
+public protocol BlinkCompatible {}
 
 /// Item
 public struct BK<Item> {
-    
+
     /// Prefix property
     public let bk: Item
-    
+
     /// Initialization method
     /// - Parameter bk: Item
-    public init(_ ds : Item) {
+    public init(_ ds: Item) {
         self.bk = ds
     }
 }
 
-public extension BlinkCompatible {
-    
+extension BlinkCompatible {
+
     /// Instance property
-    var bk: BK<Self> {
-        set { }
+    public var bk: BK<Self> {
+        set {}
         get { BK(self) }
     }
-    
+
     /// Static property
-    static var bk: BK<Self>.Type {
-        set { }
+    public static var bk: BK<Self>.Type {
+        set {}
         get { BK<Self>.self }
     }
 }
 
-
-extension Image: BlinkCompatible { }
-
+extension Image: BlinkCompatible {}
+extension String: BlinkCompatible {}
+extension Blink: BlinkCompatible {}
