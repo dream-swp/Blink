@@ -14,12 +14,15 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var showTopToast = false
-    @ObservedObject var `default` = Config.init(title: "Default", message: "Default Message`").display { .init(isHidden: true, isAutoHidden: true) }
+    @ObservedObject var `default`: Config =
+        .init(title: "Default", message: "Default Message")
+        .display { .init(isHidden: true, isAutoHidden: false) }
+        .style { .init(position: .top) }
     
     var body: some View {
         HStack(spacing: 30) {
             Button("`default`") {
-                `default`.display.isHidden.toggle()
+                Blink.bk.display { `default` }
             }
 
             Button("`top`") {

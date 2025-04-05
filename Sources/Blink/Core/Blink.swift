@@ -18,7 +18,7 @@ public struct Blink: View {
 
     public var body: some View {
 
-        HStack {
+        VStack {
             if case .bottom = style.position {
                 Spacer()
             }
@@ -75,18 +75,17 @@ extension Blink {
 
 }
 
-
 #Preview {
     @ObservedObject var `default` = Config.init(title: "Default", message: "Default Message`").display { .init(isHidden: false) }
 
     HStack(spacing: 30) {
         Button("`default`") {
-            
+
         }
     }
     #if os(macOS)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     #endif
-        .blink(`default`)
+    .blink(`default`)
 
 }

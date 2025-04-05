@@ -92,6 +92,7 @@ extension BK where Item == Blink {
                     withAnimation { result().config.display.isHidden = true }
                 }
             }
+            withAnimation { result().config.display.isHidden = true }
             return nil
         }
     }

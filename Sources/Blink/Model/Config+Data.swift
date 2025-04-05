@@ -8,11 +8,13 @@
 import Combine
 import SwiftUI
 
+// MARK: - Config.Data
 extension Config {
 
-    //  Drives the `ToastView` data model
+    ///  Drives the `Blink` data model
     public struct Data: Sendable {
 
+        /// `default`  Initialization
         public static let `default` = Data(title: "", message: "")
 
         /// Tips title
@@ -24,6 +26,18 @@ extension Config {
         /// Tips image name
         public var image: String = String.bk.defaultImageSystemName
 
+        /// Initialization Data
+        /// - Parameters:
+        ///   - title:      Tips title
+        ///   - message:    Tips message
+        ///   - image:      Tips image
+        public init(title: String, message: String, image: String = .bk.defaultImageSystemName) {
+            self.title = title
+            self.message = message
+            self.image = image
+        }
+
     }
 
 }
+// MARK: -

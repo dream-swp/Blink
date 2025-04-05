@@ -11,19 +11,25 @@ extension Config {
 
     public struct Style: Sendable {
 
+        /// Rapid Initialization
         public static let `default` = Style()
 
         /// Title and Message text location
-        public var textAlignment: TextAlignment = .center
+        public var textAlignment: TextAlignment = .leading
 
         /// Image and Text Layout
         public var alignment: Alignment = .horizontal
 
-        public var position: Position = .top
+        public var position: Position = .bottom
 
         public var backgroundColor: Color = .red
-        
-        
+
+        public init(textAlignment: TextAlignment = .leading, alignment: Alignment = .horizontal, position: Position = .bottom, backgroundColor: Color = .red) {
+            self.textAlignment = textAlignment
+            self.alignment = alignment
+            self.position = position
+            self.backgroundColor = backgroundColor
+        }
 
     }
 

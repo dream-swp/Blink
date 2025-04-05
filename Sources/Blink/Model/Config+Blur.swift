@@ -7,8 +7,10 @@
 
 import SwiftUI
 
+// MARK: - Config.Blur
 extension Config {
 
+    /// Drives `Blink` Background Blur
     public struct Blur: Sendable {
 
         /// Rapid Initialization
@@ -22,3 +24,4 @@ extension Config {
     }
 
 }
+// MARK: -

@@ -10,6 +10,8 @@ import Foundation
 
 extension Config {
 
+    
+    /// `Blink` 
     public struct Display: @unchecked Sendable {
 
         /// Hidden or display `Blink`, Hidden = true, display = false, `default` = `true`
@@ -31,6 +33,13 @@ extension Config {
         public static let `default`: Display = .init()
         
         
+        /// Initialization Display
+        /// - Parameters:
+        ///   - isHidden:       Hidden or display `Blink`, Hidden = true, display = false, `default` = `true`
+        ///   - delay:          Delay Hidden `Blink`, `default` = `2s`
+        ///   - isAutoHidden:   Automatically hidden, `default` = `true`
+        ///   - isTapGesture:   Click `Blink` is hidden
+        ///   - cancellable:    Time Tasks
         public init(isHidden: Bool = true, delay: TimeInterval = 2, isAutoHidden: Bool = true, isTapGesture: Bool = true, cancellable: AnyCancellable? = nil) {
             self.isHidden = isHidden
             self.delay = delay
