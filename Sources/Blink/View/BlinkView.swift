@@ -8,15 +8,15 @@
 import Foundation
 import SwiftUI
 
+// MARK: - BlinkView
+/// `BlinkView`:  Display `Blink` layer
 public struct BlinkView: View {
 
-    
-    typealias Source = (data: Config.Data, style: Config.Style)
-    
+    /// Display data
     public var data: Config.Data
-    public var style: Config.Style = .default
 
-   
+    /// Display Style
+    public var style: Config.Style = .default
 
     public var body: some View {
 
@@ -31,42 +31,66 @@ public struct BlinkView: View {
 
 }
 
-
+// MARK: - BlinkView extension
 extension BlinkView {
 
-    var source: Source {
+    /// Callback data
+    fileprivate typealias Source = (data: Config.Data, style: Config.Style)
+
+    /// Callback data
+    fileprivate var source: Source {
         (data, style)
     }
-    
-    var message: (_: () -> (alignment: HorizontalAlignment, data: Config.Data, style: Config.Style)) -> AnyView {
 
-        return { reslut in
-            VStack(alignment: reslut().alignment, spacing: 3) {
-                Text(LocalizedStringKey(reslut().data.title))
-                    .font(.headline)
-                    .fontWeight(.bold)
-                Text(LocalizedStringKey(reslut().data.message))
-                    .font(.subheadline)
-                    .opacity(0.9)
-            }.eraseToAnyView
-
-        }
-
-    }
-
-    /// Display Image
-    var image: (_: () -> Source) -> AnyView {
-        return {
-            Image(systemName: $0().data.image)
-                .font(.title)
-                .font(.body).eraseToAnyView
-        }
-    }
-    //
-    var vertical: (_: () -> Source) -> AnyView {
-
+    /// Display message ( title & message )
+    fileprivate var message: (_: () -> (alignment: HorizontalAlignment, data: Config.Data, style: Config.Style)) -> AnyView {
         return { reslut in
 
+            let data = reslut().data
+            let style = reslut().style
+
+            if data.title.isEmpty && data.message.isEmpty {
+                return EmptyView().eraseToAnyView
+            }
+            return VStack(alignment: reslut().alignment, spacing: 3) {
+                if !data.title.isEmpty {
+                    Text(LocalizedStringKey(data.title))
+                        .font(style.titleFont)
+                        .foregroundStyle(style.titleColor)
+                }
+                if !data.message.isEmpty {
+                    Text(LocalizedStringKey(data.message))
+                        .font(style.messageFont)
+                        .opacity(0.9)
+                        .foregroundStyle(style.messageColor)
+                }
+
+            }
+            .eraseToAnyView
+
+        }
+    }
+
+    /// Display system Image
+    fileprivate var image: (_: () -> Source) -> AnyView {
+        return { reslut in
+            let data = reslut().data
+            let style = reslut().style
+            if data.image.isEmpty {
+                return EmptyView().eraseToAnyView
+            }
+            return Image(systemName: data.image)
+                .font(style.imageFont)
+                .foregroundStyle(style.imageColor)
+                .eraseToAnyView
+
+        }
+    }
+
+    /// vertical: Vertical layout ( title & message: image )
+    fileprivate var vertical: (_: () -> Source) -> AnyView {
+
+        return { reslut in
             HStack {
                 if case .trailing = reslut().style.textAlignment {
                     Spacer()
@@ -78,16 +102,14 @@ extension BlinkView {
                     Spacer()
                 }
             }
-            .foregroundStyle(.orange)
             .padding(10)
             .eraseToAnyView
         }
     }
 
-    var horizontal: (_: () -> Source) -> AnyView {
-
+    /// horizontal: Horizontal layout ( title & message: image )
+    fileprivate var horizontal: (_: () -> Source) -> AnyView {
         return { reslut in
-
             HStack {
                 if case .trailing = reslut().style.textAlignment {
                     Spacer()
@@ -101,14 +123,14 @@ extension BlinkView {
                     Spacer()
                 }
             }
-            .foregroundStyle(.orange)
             .padding(10)
             .eraseToAnyView
         }
     }
 }
-
+// MARK: - BlinkView Preview
 #Preview {
-    BlinkView(data: .init(title: "111", message: "222"))
-
+    BlinkView(data: .init(title: "Data Request", message: "Network loading, request data...."))
 }
+
+// MARK: -

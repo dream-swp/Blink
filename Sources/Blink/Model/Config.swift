@@ -84,7 +84,6 @@ public class Config: ObservableObject, ConfigProperty, @unchecked Sendable {
 
     /// Rapid Initialization
     public static var config: (_: () -> (title: String, message: String)) -> Config {
-
         return {
             .init(title: $0().title, message: $0().message)
         }

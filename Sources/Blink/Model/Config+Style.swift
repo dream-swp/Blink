@@ -7,12 +7,14 @@
 
 import SwiftUI
 
+// MARK: - Config.Style
 extension Config {
 
+    /// `Blink` Style data model
     public struct Style: Sendable {
 
         /// Rapid Initialization
-        public static let `default` = Style()
+        public static let `default`: Style = .init()
 
         /// Title and Message text location
         public var textAlignment: TextAlignment = .leading
@@ -20,19 +22,30 @@ extension Config {
         /// Image and Text Layout
         public var alignment: Alignment = .horizontal
 
+        /// title & message and image position
         public var position: Position = .bottom
 
+        /// background color
         public var backgroundColor: Color = .red
 
-        public init(textAlignment: TextAlignment = .leading, alignment: Alignment = .horizontal, position: Position = .bottom, backgroundColor: Color = .red) {
-            self.textAlignment = textAlignment
-            self.alignment = alignment
-            self.position = position
-            self.backgroundColor = backgroundColor
-        }
+        /// title color
+        public var titleColor: Color = .white
 
+        /// message color
+        public var messageColor: Color = .white
+
+        /// title font
+        public var titleFont: Font = .headline.bold()
+
+        /// message font
+        public var messageFont: Font = .subheadline
+        
+        /// image font
+        public var imageFont: Font = .title.bold()
+        
+        /// image color
+        public var imageColor: Color = .white
     }
-
 }
 
 extension Config.Style {
@@ -59,6 +72,7 @@ extension Config.Style {
         case vertical
     }
 
+    /// `Blink` Display Position
     public enum Position: Sendable {
 
         /// Top position
@@ -71,3 +85,4 @@ extension Config.Style {
         case center
     }
 }
+// MARK: -

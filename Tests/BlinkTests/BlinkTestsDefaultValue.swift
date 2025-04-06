@@ -13,7 +13,7 @@ import SwiftUI
 
 final class BlinkTestsDefaultValue: BlinkTests {
     
-    @DefaultValue<Double>(defaultValue: 0.6, value: 0)
+    @BlinkDefaultValue<Double>(defaultValue: 0.6, value: 0)
     private var result
     
     

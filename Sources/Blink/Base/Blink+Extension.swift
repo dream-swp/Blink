@@ -8,25 +8,34 @@
 import Combine
 import SwiftUI
 
+// MARK: - Image: Extension
 extension BK where Item == Image {
+
+    /// default display Image
     public static var `default`: Image {
         Image(systemName: String.bk.defaultImageSystemName)
     }
 }
 
+// MARK: - String: Extension
 extension BK where Item == String {
+
+    /// default display Image name
     public static var defaultImageSystemName: String { "checkmark.circle" }
 }
 
+// MARK: - View: Extension
 extension View {
 
+    /// Convert to AnyView
     public var eraseToAnyView: AnyView {
         AnyView(self)
     }
 }
 
+// MARK: - Blink: Extension
 extension BK where Item == Blink {
-    
+
     /// Delayed implementation of tasks
     /// - Parameters:
     ///   - time:   Time Delay
@@ -38,7 +47,7 @@ extension BK where Item == Blink {
             .autoconnect()
             .sink { _ in task() }
     }
-    
+
     /// Delayed implementation of tasks
     /// - Parameters:
     ///   - time:   Time Delay
@@ -57,24 +66,28 @@ extension BK where Item == Blink {
         withAnimation { config.display.isHidden = false }
     }
 
+    /// `Blink` animation display
     public static var display: (_: () -> Config) -> Void {
         return { result in
             withAnimation { result().display.isHidden = false }
         }
     }
 
+    /// `Blink` animation hidden
     public static var hidden: (_: () -> Config) -> Void {
         return { result in
             withAnimation { result().display.isHidden = true }
         }
     }
 
+    /// `Blink` animation display
     public var display: (_: () -> Config) -> Void {
         return { result in
             withAnimation { result().display.isHidden = false }
         }
     }
 
+    /// `Blink` animation hidden
     public var hidden: (_: () -> Config) -> Void {
         return { result in
             withAnimation { result().display.isHidden = true }
@@ -82,10 +95,11 @@ extension BK where Item == Blink {
     }
 }
 
+// MARK: - Blink: Extension, internal
 extension BK where Item == Blink {
 
+    /// `Blink` animation isDelayHidden
     var isDelayHidden: (_: @escaping () -> (config: Config, isDelay: Bool)) -> AnyCancellable? {
-
         return { result in
             if result().isDelay {
                 return self.delay(result().config.display.delay) {
@@ -97,3 +111,4 @@ extension BK where Item == Blink {
         }
     }
 }
+// MARK: - 

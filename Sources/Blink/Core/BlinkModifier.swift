@@ -7,12 +7,20 @@
 
 import SwiftUI
 
+// MARK: - BlinkModifier
+/// `BlinkModifier`,  Blink Modifier
 struct BlinkModifier<Item>: ViewModifier where Item: View {
-
+    
+    /// isHidden is display
     @Binding var isHidden: Bool
 
+    /// Content customized view
     private var content: () -> Item
 
+    /// BlinkModifier Initialization
+    /// - Parameters:
+    ///   - isHidden: isHidden is display
+    ///   - content:  content customized view
     init(_ isHidden: Binding<Bool>, content: @escaping () -> Item) {
         self._isHidden = isHidden
         self.content = content
@@ -42,17 +50,29 @@ struct BlinkModifier<Item>: ViewModifier where Item: View {
     }
 }
 
+// MARK: - View Extension
 extension View {
-
+    
+    ///  Display `Blink` view can be customized
+    /// - Parameters:
+    ///   - isHidden:   Drive `Blink` to display or hide
+    ///   - blink:      Display the `Blink`
+    /// - Returns:      BlinkModifier
     public func blink<Item>(_ isHidden: Bool, @ViewBuilder blink: @escaping () -> Item) -> some View where Item: View {
         let isHidden: Binding<Bool> = Binding.constant(isHidden)
         return self.modifier(BlinkModifier(isHidden, content: blink))
     }
 
+    
+    /// Display `Blink` view
+    /// - Parameter config: Drives the `Blink` data model
+    /// - Returns:  BlinkModifier
     public func blink(_ config: Config) -> some View {
-        self.blink(config.display.isHidden, blink: { Blink(config: config) })
+        self.blink(config.display.isHidden, blink: { Blink(config) })
     }
 
+    
+    /// Display `Blink` view
     public var blink: (_: () -> Config) -> AnyView {
         return {
             blink($0()).eraseToAnyView
@@ -60,3 +80,4 @@ extension View {
     }
 
 }
+// MARK: -

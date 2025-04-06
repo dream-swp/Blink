@@ -4,15 +4,23 @@
 import Combine
 import SwiftUI
 
+// MARK: - Blink
 public struct Blink: View {
 
+    /// Drives `Blink` configuration model
     public var config: Config
 
+    /// Initialization Blink
+    /// - Parameters:
+    ///   - title:      title
+    ///   - message:    message
     public init(title: String, message: String) {
-        self.init(config: .init(title: title, message: message))
+        self.init(.init(title: title, message: message))
     }
 
-    public init(config: Config) {
+    /// Initialization Blink
+    /// - Parameter config: config
+    public init(_ config: Config) {
         self.config = config
     }
 
@@ -62,21 +70,25 @@ public struct Blink: View {
     }
 
 }
-
+// MARK: - Blink, Extension
 extension Blink {
 
+    /// get style
     private var style: Config.Style {
         config.style
     }
 
+    /// get data
     private var data: Config.Data {
         config.data
     }
 
 }
 
+// MARK: - Blink, Preview
 #Preview {
-    @ObservedObject var `default` = Config.init(title: "Default", message: "Default Message`").display { .init(isHidden: false) }
+
+    @ObservedObject var `default` = Config.init(title: "Data Request", message: "Network loading, request data....").display { .init(isHidden: false) }
 
     HStack(spacing: 30) {
         Button("`default`") {
@@ -89,3 +101,4 @@ extension Blink {
     .blink(`default`)
 
 }
+// MARK: -

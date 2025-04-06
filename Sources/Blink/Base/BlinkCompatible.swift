@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// MARK: - BlinkCompatible
 /// Data isolation protocol
 public protocol BlinkCompatible {}
 
@@ -38,6 +39,10 @@ extension BlinkCompatible {
     }
 }
 
+// MARK: - Image: BlinkCompatible
 extension Image: BlinkCompatible {}
+// MARK: - String: BlinkCompatible
 extension String: BlinkCompatible {}
+// MARK: - Blink: BlinkCompatible
 extension Blink: BlinkCompatible {}
+// MARK: -
