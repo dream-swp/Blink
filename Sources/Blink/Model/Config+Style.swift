@@ -8,81 +8,85 @@
 import SwiftUI
 
 // MARK: - Config.Style
-extension Config {
+/// `Blink` Style data model
+public struct Style: Sendable {
 
-    /// `Blink` Style data model
-    public struct Style: Sendable {
+    /// Rapid Initialization
+    public static let `default`: Style = .init()
 
-        /// Rapid Initialization
-        public static let `default`: Style = .init()
+    /// Title and Message text location
+    public var textAlignment: TextAlignment = .center
 
-        /// Title and Message text location
-        public var textAlignment: TextAlignment = .leading
+    /// Image and Text Layout
+    public var alignment: Alignment = .horizontal
 
-        /// Image and Text Layout
-        public var alignment: Alignment = .horizontal
+    /// title & message and image position
+    public var position: Position = .center
 
-        /// title & message and image position
-        public var position: Position = .bottom
+    /// background color
+    public var backgroundColor: Color = .red
 
-        /// background color
-        public var backgroundColor: Color = .red
+    /// title Text
+    public var title: Text?
 
-        /// title color
-        public var titleColor: Color = .white
+    /// details Text
+    public var details: Text?
 
-        /// message color
-        public var messageColor: Color = .white
+    /// details Image
+    public var image: Image?
 
-        /// title font
-        public var titleFont: Font = .headline.bold()
-
-        /// message font
-        public var messageFont: Font = .subheadline
-        
-        /// image font
-        public var imageFont: Font = .title.bold()
-        
-        /// image color
-        public var imageColor: Color = .white
+    /// Initialization Style
+    /// - Parameters:
+    ///   - textAlignment:      textAlignment
+    ///   - alignment:          alignment
+    ///   - position:           position
+    ///   - backgroundColor:    backgroundColor
+    ///   - title:              title
+    ///   - details:            details
+    ///   - image:              image
+    public init(textAlignment: TextAlignment = .center, alignment: Alignment = .horizontal, position: Position = .center, backgroundColor: Color = .red, title: Text? = nil, details: Text? = nil, image: Image? = nil) {
+        self.textAlignment = textAlignment
+        self.alignment = alignment
+        self.position = position
+        self.backgroundColor = backgroundColor
+        self.title = title
+        self.details = details
+        self.image = image
     }
 }
 
-extension Config.Style {
+/// Title and Message Text Alignment
+public enum TextAlignment: Sendable {
+    /// Center display
+    case center
 
-    /// Title and Message Text Alignment
-    public enum TextAlignment: Sendable {
-        /// Center display
-        case center
+    /// Display on the left
+    case leading
 
-        /// Display on the left
-        case leading
+    /// Display on the right
+    case trailing
+}
 
-        /// Display on the right
-        case trailing
-    }
+/// Image and Text layout
+public enum Alignment: Sendable {
 
-    /// Image and Text layout
-    public enum Alignment: Sendable {
+    /// Horizontal layout
+    case horizontal
 
-        /// Horizontal layout
-        case horizontal
+    /// Vertical layout
+    case vertical
+}
 
-        /// Vertical layout
-        case vertical
-    }
+/// `Blink` Display Position
+public enum Position: Sendable {
 
-    /// `Blink` Display Position
-    public enum Position: Sendable {
+    /// Top position
+    case top
 
-        /// Top position
-        case top
+    /// Bottom position
+    case bottom
 
-        /// Bottom position
-        case bottom
-
-        /// Center position
-        case center
-    }
+    /// Center position
+    case center
 }
 // MARK: -

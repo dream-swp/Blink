@@ -13,49 +13,61 @@ import SwiftUI
 public protocol ConfigProperty: AnyObject {
 
     ///  Drives the `Blink` data model
-    var data: Config.Data { get set }
+    var message: Message { get set }
 
     ///  Drives the `Blink` data model
-    var style: Config.Style { get set }
+    var style: Style { get set }
 
     ///  Drives `Blink` display data model
-    var display: Config.Display { get set }
+    var display: Display { get set }
+
+    ///  Drives `Blink` blur data model
+    var blur: Blur? { get set }
 
 }
 
 extension ConfigProperty {
 
     /// Update data
-    public var data: (_: () -> Config.Data) -> Self {
+    public var message: (_: () -> Message) -> Self {
         return {
-            self.data = $0()
+            self.message = $0()
             return self
         }
     }
 
     /// Update style
-    public var style: (_: () -> Config.Style) -> Self {
+    public var style: (_: () -> Style) -> Self {
         return {
             self.style = $0()
             return self
         }
     }
 
-    /// Update style display
-    public var display: (_: () -> Config.Display) -> Self {
+    /// Update display display
+    public var display: (_: () -> Display) -> Self {
         return {
             self.display = $0()
+            return self
+        }
+    }
+
+    /// Update style display
+    public var blur: (_: () -> Blur) -> Self {
+        return {
+            self.blur = $0()
             return self
         }
     }
 }
 
 // MARK: - Config
-/// Drives the `Blink` data model
+
+// Drives the `Blink` data model
 public class Config: ObservableObject, ConfigProperty, @unchecked Sendable {
 
     ///  Drives the `Blink` data model
-    @Published public var data: Data
+    @Published public var message: Message
 
     /// Drives the `Blink` style data model
     @Published public var style: Style = .default
@@ -67,27 +79,45 @@ public class Config: ObservableObject, ConfigProperty, @unchecked Sendable {
     @Published public var blur: Blur?
 
     /// Initialize Config
-    /// - Parameter data: Config.Data
-    public init(_ data: Data) {
-        self.data = data
-        self.style = style
+    /// - Parameter message: Config.Data
+    public init(_ message: Message) {
+        self.message = message
+        self.style = .default
     }
 
     /// Convenient Initialization Config
     /// - Parameters:
     ///   - title:      title
     ///   - message:    message
-    public convenience init(title: String, message: String) {
-        let data = Data(title: title, message: message)
+    public convenience init(title: String, details: String) {
+        let data = Message(title: title, details: details)
         self.init(data)
     }
 
     /// Rapid Initialization
     public static var config: (_: () -> (title: String, message: String)) -> Config {
         return {
-            .init(title: $0().title, message: $0().message)
+            .init(title: $0().title, details: $0().message)
         }
     }
+}
+
+extension Config {
+
+    public static var center: (_: () -> (title: String, message: String)) -> Config {
+        return { result in
+            .init(title: result().title, details: result().message)
+                .style { .init(textAlignment: .center) }
+        }
+    }
+
+    public static var leading: (_: () -> (title: String, message: String)) -> Config {
+        return { result in
+            .init(title: result().title, details: result().message)
+            .style { .init(textAlignment: .leading, position: .bottom) }
+        }
+    }
+
 }
 
 // MARK: -

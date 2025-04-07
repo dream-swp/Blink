@@ -13,10 +13,10 @@ import SwiftUI
 public struct BlinkView: View {
 
     /// Display data
-    public var data: Config.Data
+    public var message: Message
 
     /// Display Style
-    public var style: Config.Style = .default
+    public var style: Style = .default
 
     public var body: some View {
 
@@ -34,55 +34,100 @@ public struct BlinkView: View {
 // MARK: - BlinkView extension
 extension BlinkView {
 
-    /// Callback data
-    fileprivate typealias Source = (data: Config.Data, style: Config.Style)
+    /// Callback data source
+    fileprivate typealias Source = (message: Message, style: Style)
+
+    /// Callback Result
+    fileprivate typealias Result = (() -> Source) -> AnyView
 
     /// Callback data
     fileprivate var source: Source {
-        (data, style)
+        (message, style)
     }
 
-    /// Display message ( title & message )
-    fileprivate var message: (_: () -> (alignment: HorizontalAlignment, data: Config.Data, style: Config.Style)) -> AnyView {
+    /// Display Title
+    fileprivate var title: Result {
         return { reslut in
-
-            let data = reslut().data
+            let message = reslut().message
             let style = reslut().style
 
-            if data.title.isEmpty && data.message.isEmpty {
-                return EmptyView().eraseToAnyView
+            if let title = style.title {
+                return title.eraseToAnyView
             }
-            return VStack(alignment: reslut().alignment, spacing: 3) {
-                if !data.title.isEmpty {
-                    Text(LocalizedStringKey(data.title))
-                        .font(style.titleFont)
-                        .foregroundStyle(style.titleColor)
-                }
-                if !data.message.isEmpty {
-                    Text(LocalizedStringKey(data.message))
-                        .font(style.messageFont)
-                        .opacity(0.9)
-                        .foregroundStyle(style.messageColor)
-                }
+            return Text(LocalizedStringKey(message.title))
+                .font(.subheadline)
+                .fontWeight(.bold)
+                .foregroundStyle(.white)
+                .eraseToAnyView
+        }
+    }
 
+    /// Display Details
+    fileprivate var details: Result {
+        return { reslut in
+            let message = reslut().message
+            let style = reslut().style
+
+            if let details = style.details {
+                return details.eraseToAnyView
             }
-            .eraseToAnyView
-
+            return Text(LocalizedStringKey(message.details))
+                .font(.subheadline)
+                .foregroundStyle(.white)
+                .eraseToAnyView
         }
     }
 
     /// Display system Image
-    fileprivate var image: (_: () -> Source) -> AnyView {
+    fileprivate var systemImage: Result {
         return { reslut in
-            let data = reslut().data
+            let message = reslut().message
             let style = reslut().style
-            if data.image.isEmpty {
+
+            if let image = style.image {
+                return image.eraseToAnyView
+            }
+
+            return Image(systemName: message.image)
+                .font(.title)
+                .fontWeight(.bold)
+                .foregroundStyle(.white)
+                .eraseToAnyView
+        }
+    }
+
+    
+    /// Display title & details & image
+    fileprivate var information: (_ reslut: () -> (alignment: HorizontalAlignment, message: Message, style: Style)) -> AnyView {
+        return { reslut in
+
+            let data = reslut().message
+            let style = reslut().style
+            if data.title.isEmpty && data.details.isEmpty {
                 return EmptyView().eraseToAnyView
             }
-            return Image(systemName: data.image)
-                .font(style.imageFont)
-                .foregroundStyle(style.imageColor)
-                .eraseToAnyView
+            return VStack(alignment: reslut().alignment, spacing: 3) {
+                if !data.title.isEmpty {
+                    title { (data, style) }
+                }
+                if !data.details.isEmpty {
+                    details { (data, style) }
+                }
+
+            }.eraseToAnyView
+
+        }
+    }
+
+    /// Display image
+    fileprivate var image: (_: () -> Source) -> AnyView {
+        return { reslut in
+            let message = reslut().message
+            let style = reslut().style
+            if message.image.isEmpty {
+                return EmptyView().eraseToAnyView
+            }
+            return systemImage { (message, style) }
 
         }
     }
@@ -96,8 +141,7 @@ extension BlinkView {
                     Spacer()
                 }
                 image(reslut)
-                message { (.center, reslut().data, reslut().style) }
-
+                information { (.center, reslut().message, reslut().style) }
                 if case .leading = reslut().style.textAlignment {
                     Spacer()
                 }
@@ -116,7 +160,7 @@ extension BlinkView {
                 }
                 VStack(spacing: 10) {
                     image(reslut)
-                    message { (.center, reslut().data, reslut().style) }
+                    information { (.center, reslut().message, reslut().style) }
                 }
 
                 if case .leading = reslut().style.textAlignment {
@@ -130,7 +174,6 @@ extension BlinkView {
 }
 // MARK: - BlinkView Preview
 #Preview {
-    BlinkView(data: .init(title: "Data Request", message: "Network loading, request data...."))
+    BlinkView(message: .init(title: "Data Request", details: "Network loading, request data...."))
 }
-
 // MARK: -

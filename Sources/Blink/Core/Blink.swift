@@ -15,7 +15,7 @@ public struct Blink: View {
     ///   - title:      title
     ///   - message:    message
     public init(title: String, message: String) {
-        self.init(.init(title: title, message: message))
+        self.init(.init(title: title, details: message))
     }
 
     /// Initialization Blink
@@ -31,13 +31,14 @@ public struct Blink: View {
                 Spacer()
             }
             #if os(macOS)
-                BlinkView(data: data, style: style)
+                BlinkView(message: data, style: style)
                     .background(style.backgroundColor.opacity(0.6))
                     .background(.ultraThinMaterial)
                     .cornerRadius(10)
+                    .opacity(0.7)
 
             #else
-                BlinkView(data: data, style: style)
+                BlinkView(message: data, style: style)
                     .background(style.backgroundColor.opacity(0.8))
                     .cornerRadius(10)
             #endif
@@ -74,21 +75,25 @@ public struct Blink: View {
 extension Blink {
 
     /// get style
-    private var style: Config.Style {
+    private var style: Style {
         config.style
     }
 
     /// get data
-    private var data: Config.Data {
-        config.data
+    private var data: Message {
+        config.message
     }
+
+}
+
+extension Blink {
 
 }
 
 // MARK: - Blink, Preview
 #Preview {
-
-    @ObservedObject var `default` = Config.init(title: "Data Request", message: "Network loading, request data....").display { .init(isHidden: false) }
+    
+    @ObservedObject var `default`: Config = .init(title: "Data Request", details: "Network loading, request data....").display { .init(isHidden: false) }
 
     HStack(spacing: 30) {
         Button("`default`") {
