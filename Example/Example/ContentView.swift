@@ -12,13 +12,9 @@ struct ContentView: View {
 
     @State private var showTopToast = false
 
-    @ObservedObject var `default`: Config =
-        .init(title: "Default", details: "Default Message")
-        .display { Display(isHidden: true) }
-        .style { Style(textAlignment: .center) }
-        .blur { .init(backgroundColor: .orange) }
+    @ObservedObject var `default`: Config = .default { ("Default", "Default Message") }
 
-    @ObservedObject var center: Config = .center { ("Default", "Default Message") }
+    @ObservedObject var top: Config = .top { ("Default", "Default Message") }
 
     @ObservedObject var leading: Config = .leading { ("Default", "Default Message") }
 
@@ -29,11 +25,11 @@ struct ContentView: View {
             }
 
             Button("`top`") {
-                Blink.bk.display { leading }
+                Blink.bk.display { top }
             }
 
             Button("`center`") {
-
+                Blink.bk.display { leading }
             }
 
             Button("`bottom`") {
@@ -45,6 +41,7 @@ struct ContentView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         #endif
         .blink(`default`)
+        .blink(top)
         .blink(leading)
         //            .blink(`default`.display.isHidden) {
         ////                Text("111")

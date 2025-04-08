@@ -20,12 +20,11 @@ public struct BlinkView: View {
 
     public var body: some View {
 
-        switch style.alignment {
-        case .horizontal:
-            horizontal { source }
-
-        case .vertical:
-            vertical { source }
+        switch style.padded {
+        case .auto:
+            auto { source }
+        case .full:
+            full { source }
         }
     }
 
@@ -96,7 +95,6 @@ extension BlinkView {
         }
     }
 
-    
     /// Display title & details & image
     fileprivate var information: (_ reslut: () -> (alignment: HorizontalAlignment, message: Message, style: Style)) -> AnyView {
         return { reslut in
@@ -132,48 +130,65 @@ extension BlinkView {
         }
     }
 
-    /// vertical: Vertical layout ( title & message: image )
-    fileprivate var vertical: (_: () -> Source) -> AnyView {
+    /// auto
+    fileprivate var auto: Result {
 
         return { reslut in
-            HStack {
-                if case .trailing = reslut().style.textAlignment {
-                    Spacer()
-                }
-                image(reslut)
-                information { (.center, reslut().message, reslut().style) }
-                if case .leading = reslut().style.textAlignment {
-                    Spacer()
-                }
-            }
-            .padding(10)
-            .eraseToAnyView
-        }
-    }
 
-    /// horizontal: Horizontal layout ( title & message: image )
-    fileprivate var horizontal: (_: () -> Source) -> AnyView {
-        return { reslut in
-            HStack {
-                if case .trailing = reslut().style.textAlignment {
-                    Spacer()
-                }
-                VStack(spacing: 10) {
+            let style = reslut().style
+
+            switch style.alignment {
+
+            case .vertical:
+                return HStack {
                     image(reslut)
                     information { (.center, reslut().message, reslut().style) }
                 }
+                .padding(10)
+                .eraseToAnyView
 
-                if case .leading = reslut().style.textAlignment {
+            case .horizontal:
+                return VStack(spacing: 10) {
+                    image(reslut)
+                    information { (.center, reslut().message, reslut().style) }
+                }
+                .padding(10)
+                .eraseToAnyView
+            }
+
+        }
+    }
+
+    /// full
+    fileprivate var full: Result {
+
+        return { reslut in
+
+            HStack {
+                let style = reslut().style
+                if style.textAlignment == .trailing || style.textAlignment == .center {
+                    Spacer()
+                }
+
+                auto(reslut)
+
+                if style.textAlignment == .leading || style.textAlignment == .center {
                     Spacer()
                 }
             }
             .padding(10)
             .eraseToAnyView
         }
+
     }
+
 }
+
 // MARK: - BlinkView Preview
 #Preview {
-    BlinkView(message: .init(title: "Data Request", details: "Network loading, request data...."))
+
+    let style = Style(alignment: .horizontal, padded: .full)
+    BlinkView(message: .init(title: "Data Request", details: "Network loading, request data...."), style: style)
+
 }
 // MARK: -

@@ -25,48 +25,28 @@ public struct Blink: View {
     }
 
     public var body: some View {
+        
+        content { source }
 
-        VStack {
-            if case .bottom = style.position {
-                Spacer()
+            .padding()
+            .opacity(config.display.isHidden ? 0 : 1.0)
+            .transition(.opacity)
+            .onAppear {
+                if config.display.isAutoHidden {
+                    config.display.cancellable = bk.isDelayHidden { (config, true) }
+                }
             }
-            #if os(macOS)
-                BlinkView(message: data, style: style)
-                    .background(style.backgroundColor.opacity(0.6))
-                    .background(.ultraThinMaterial)
-                    .cornerRadius(10)
-                    .opacity(0.7)
-
-            #else
-                BlinkView(message: data, style: style)
-                    .background(style.backgroundColor.opacity(0.8))
-                    .cornerRadius(10)
-            #endif
-
-            if case .top = style.position {
-                Spacer()
+            .onDisappear {
+                if config.display.isAutoHidden {
+                    config.display.cancellable?.cancel()
+                    config.display.cancellable = nil
+                }
             }
-
-        }
-        .padding()
-        .opacity(config.display.isHidden ? 0 : 1.0)
-        .transition(.opacity)
-        .onAppear {
-            if config.display.isAutoHidden {
-                config.display.cancellable = bk.isDelayHidden { (config, true) }
+            .onTapGesture {
+                if config.display.isTapGesture {
+                    _ = bk.isDelayHidden { (config, false) }
+                }
             }
-        }
-        .onDisappear {
-            if config.display.isAutoHidden {
-                config.display.cancellable?.cancel()
-                config.display.cancellable = nil
-            }
-        }
-        .onTapGesture {
-            if config.display.isTapGesture {
-                _ = bk.isDelayHidden { (config, false) }
-            }
-        }
 
     }
 
@@ -74,26 +54,131 @@ public struct Blink: View {
 // MARK: - Blink, Extension
 extension Blink {
 
+    /// data source and Result AnyView
+    private typealias Result = (_: () -> (message: Message, style: Style)) -> AnyView
+
+    /// data source
+    private typealias Source = (message: Message, style: Style)
+
     /// get style
     private var style: Style {
         config.style
     }
 
     /// get data
-    private var data: Message {
+    private var message: Message {
         config.message
     }
 
-}
+    /// data source
+    private var source: Source {
+        (message, style)
+    }
 
-extension Blink {
+    /// blinkView
+    private var blinkView: Result {
 
+        return { result in
+            let message = result().message
+            let style = result().style
+            #if os(macOS)
+                return BlinkView(message: message, style: style)
+                    .background(style.backgroundColor.opacity(0.6))
+                    .background(.ultraThinMaterial)
+                    .cornerRadius(10)
+                    .opacity(0.7)
+                    .eraseToAnyView
+            #else
+                return BlinkView(message: message, style: style)
+                    .background(style.backgroundColor.opacity(0.8))
+                    .cornerRadius(10)
+                    .eraseToAnyView
+            #endif
+
+        }
+    }
+
+    /// content
+    private var content: Result {
+        return { result in
+            let style = result().style
+            switch style.padded {
+            case .auto:
+                return auto(result)
+            case .full:
+                return full(result)
+            }
+        }
+    }
+
+    /// auto
+    private var auto: Result {
+
+        return { result in
+            let style = result().style
+            switch style.position {
+            case .top:
+                return VStack {
+                    blinkView(result)
+                    Spacer()
+                }
+                .eraseToAnyView
+            case .leading:
+                return HStack {
+                    blinkView(result)
+                    Spacer()
+                }
+                .eraseToAnyView
+            case .bottom:
+                return VStack {
+                    Spacer()
+                    blinkView(result)
+                }
+                .eraseToAnyView
+            case .trailing:
+                return HStack {
+                    Spacer()
+                    blinkView(result)
+                }
+                .eraseToAnyView
+            case .center:
+                return VStack {
+                    Spacer()
+                    blinkView(result)
+                    Spacer()
+                }
+                .eraseToAnyView
+            }
+        }
+    }
+
+    /// full
+    private var full: Result {
+        return { result in
+            let style = result().style
+            return VStack {
+                
+                if case .bottom = style.position {
+                    Spacer()
+                }
+                
+                blinkView(result)
+
+                if case .top = style.position {
+                    Spacer()
+                }
+            }
+            .eraseToAnyView
+        }
+    }
 }
 
 // MARK: - Blink, Preview
 #Preview {
-    
-    @ObservedObject var `default`: Config = .init(title: "Data Request", details: "Network loading, request data....").display { .init(isHidden: false) }
+
+    @ObservedObject var `default`: Config =
+        .center { ("Data Reques", "Network loading, request data....") }
+        .display { .init(isHidden: false) }
 
     HStack(spacing: 30) {
         Button("`default`") {

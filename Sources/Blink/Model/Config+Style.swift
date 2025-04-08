@@ -23,16 +23,18 @@ public struct Style: Sendable {
     /// title & message and image position
     public var position: Position = .center
 
+    public var padded: Padded = .auto
+
     /// background color
     public var backgroundColor: Color = .red
 
-    /// title Text
+    /// `Blink` Text
     public var title: Text?
 
-    /// details Text
+    /// `Blink` Details
     public var details: Text?
 
-    /// details Image
+    /// `Blink` Image
     public var image: Image?
 
     /// Initialization Style
@@ -40,14 +42,16 @@ public struct Style: Sendable {
     ///   - textAlignment:      textAlignment
     ///   - alignment:          alignment
     ///   - position:           position
+    ///   - padded:             padded
     ///   - backgroundColor:    backgroundColor
     ///   - title:              title
     ///   - details:            details
     ///   - image:              image
-    public init(textAlignment: TextAlignment = .center, alignment: Alignment = .horizontal, position: Position = .center, backgroundColor: Color = .red, title: Text? = nil, details: Text? = nil, image: Image? = nil) {
+    public init(textAlignment: TextAlignment = .center, alignment: Alignment = .horizontal, position: Position = .center, padded: Padded = .auto, backgroundColor: Color = .red, title: Text? = nil, details: Text? = nil, image: Image? = nil) {
         self.textAlignment = textAlignment
         self.alignment = alignment
         self.position = position
+        self.padded = padded
         self.backgroundColor = backgroundColor
         self.title = title
         self.details = details
@@ -80,13 +84,31 @@ public enum Alignment: Sendable {
 /// `Blink` Display Position
 public enum Position: Sendable {
 
-    /// Top position
+    /// top position
     case top
 
-    /// Bottom position
+    //  leading position
+    case leading
+
+    /// bottom position
     case bottom
 
-    /// Center position
+    //  trailing position
+    case trailing
+
+    /// center position
     case center
+
+}
+
+/// `Blink` Display Padded
+public enum Padded: Sendable {
+
+    /// Padded auto
+    case auto
+
+    /// Padded full
+    case full
+
 }
 // MARK: -
