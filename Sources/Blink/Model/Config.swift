@@ -66,7 +66,8 @@ extension ConfigProperty {
 public class Config: ObservableObject, ConfigProperty, @unchecked Sendable {
 
     /// Callback return value
-    public typealias Result = (_: () -> (title: String, message: String)) -> Config
+    public typealias Result = (_: () -> (title: String, details: String)) -> Config
+    public typealias ResultValue = (_: () -> (title: String, details: String, image: Message.Image)) -> Config
 
     ///  Drives the `Blink` data model
     @Published public var message: Message
@@ -87,23 +88,29 @@ public class Config: ObservableObject, ConfigProperty, @unchecked Sendable {
         self.style = .default
     }
 
+}
+
+// MARK: - Config Convenient Initialization
+extension Config {
+
     /// Convenient Initialization Config
     /// - Parameters:
     ///   - title:      title
     ///   - message:    message
-    public convenience init(title: String, details: String) {
-        let data = Message(title: title, details: details)
+    public convenience init(title: String, details: String, image: Message.Image? = nil) {
+        let data = Message(title: title, details: details, image: image ?? .default)
         self.init(data)
     }
-
 }
 
+
+// MARK: - Config Rapid Initialization
 extension Config {
 
     /// Rapid Initialization
     public static var `default`: Result {
         return {
-            .init(title: $0().title, details: $0().message)
+            .init(title: $0().title, details: $0().details)
         }
     }
 
@@ -142,6 +149,58 @@ extension Config {
         }
     }
 
+}
+
+// MARK: - Config Convenient Init
+extension Config {
+
+    private static var resultValue: (_: () -> (title: String, details: String, image: Message.Image)) -> Config {
+        return {
+            .init(title: $0().title, details: $0().details, image: $0().image).style { .init(position: .center, padded: .auto) }
+        }
+    }
+
+    public static var info: Result {
+        return { result in
+            let data = result()
+            return resultValue { (data.title, data.details, .info) }
+        }
+    }
+
+    public static var infoFill: Result {
+        return { result in
+            let data = result()
+            return resultValue { (data.title, data.details, .infoFill) }
+        }
+    }
+
+    public static var error: Result {
+        return { result in
+            let data = result()
+            return resultValue { (data.title, data.details, .error) }
+        }
+    }
+
+    public static var errorFill: Result {
+        return { result in
+            let data = result()
+            return resultValue { (data.title, data.details, .errorFill) }
+        }
+    }
+
+    public static var success: Result {
+        return { result in
+            let data = result()
+            return resultValue { (data.title, data.details, .success) }
+        }
+    }
+
+    public static var successFill: Result {
+        return { result in
+            let data = result()
+            return resultValue { (data.title, data.details, .successFill) }
+        }
+    }
 }
 
 // MARK: -

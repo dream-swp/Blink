@@ -15,7 +15,7 @@ public struct Blur: Sendable {
     public static let `default`: Blur = .init()
 
     /// Background Color
-    public var backgroundColor: Color = .red
+    public var backgroundColor: Color = .bk.blinkBackground
 
     /// Background Opacity, The minimum is `0.6`, `< 0.6` Click the event will penetrate
     @BlinkDefaultValue(defaultValue: 0.6, value: 0) public var opacity: Double
@@ -24,7 +24,7 @@ public struct Blur: Sendable {
     /// - Parameters:
     ///   - backgroundColor: backgroundColor
     ///   - opacity:         opacity
-    public init(backgroundColor: Color = .red, opacity: Double = 0) {
+    public init(backgroundColor: Color = .bk.blinkBackground, opacity: Double = 0) {
         self.backgroundColor = backgroundColor
         self.opacity = opacity
     }

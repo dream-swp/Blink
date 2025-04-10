@@ -45,4 +45,6 @@ extension Image: BlinkCompatible {}
 extension String: BlinkCompatible {}
 // MARK: - Blink: BlinkCompatible
 extension Blink: BlinkCompatible {}
+// MARK: - Color: BlinkCompatible
+extension Color: BlinkCompatible {}
 // MARK: -

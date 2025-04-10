@@ -26,7 +26,7 @@ public struct Style: Sendable {
     public var padded: Padded = .auto
 
     /// background color
-    public var backgroundColor: Color = .red
+    public var backgroundColor: Color = .bk.blinkBackground
 
     /// `Blink` Text
     public var title: Text?
@@ -47,7 +47,7 @@ public struct Style: Sendable {
     ///   - title:              title
     ///   - details:            details
     ///   - image:              image
-    public init(textAlignment: TextAlignment = .center, alignment: Alignment = .horizontal, position: Position = .center, padded: Padded = .auto, backgroundColor: Color = .red, title: Text? = nil, details: Text? = nil, image: Image? = nil) {
+    public init(textAlignment: TextAlignment = .center, alignment: Alignment = .horizontal, position: Position = .center, padded: Padded = .auto, backgroundColor: Color = .bk.blinkBackground, title: Text? = nil, details: Text? = nil, image: Image? = nil) {
         self.textAlignment = textAlignment
         self.alignment = alignment
         self.position = position
@@ -58,6 +58,7 @@ public struct Style: Sendable {
         self.image = image
     }
 }
+
 
 /// Title and Message Text Alignment
 public enum TextAlignment: Sendable {

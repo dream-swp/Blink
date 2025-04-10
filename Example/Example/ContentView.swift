@@ -12,7 +12,7 @@ struct ContentView: View {
 
     @State private var showTopToast = false
 
-    @ObservedObject var `default`: Config = .default { ("Default", "Default Message") }
+    @ObservedObject var `default`: Config = .info { ("Default", "Default Message") }
 
     @ObservedObject var top: Config = .top { ("Default", "Default Message") }
 

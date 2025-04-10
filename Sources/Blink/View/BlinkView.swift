@@ -56,7 +56,7 @@ extension BlinkView {
             return Text(LocalizedStringKey(message.title))
                 .font(.subheadline)
                 .fontWeight(.bold)
-                .foregroundStyle(.white)
+                .foregroundStyle(Color.bk.blinkTitle)
                 .eraseToAnyView
         }
     }
@@ -72,7 +72,7 @@ extension BlinkView {
             }
             return Text(LocalizedStringKey(message.details))
                 .font(.subheadline)
-                .foregroundStyle(.white)
+                .foregroundStyle(Color.bk.blinkDetails)
                 .eraseToAnyView
         }
     }
@@ -86,12 +86,28 @@ extension BlinkView {
             if let image = style.image {
                 return image.eraseToAnyView
             }
+            var mode: SymbolRenderingMode? = nil
+            if case .default = message.image {
+                mode = .multicolor
+            }
 
-            return Image(systemName: message.image)
-                .font(.title)
-                .fontWeight(.bold)
-                .foregroundStyle(.white)
-                .eraseToAnyView
+            if #available(macOS 15.0, iOS 18.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *) {
+                return Image(systemName: message.image.rawValue)
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .foregroundStyle(.white, .gray)
+                    .symbolRenderingMode(mode)
+                    .symbolEffect(.pulse.wholeSymbol, options: .repeat(.continuous))
+                    .eraseToAnyView
+            } else {
+                return Image(systemName: message.image.rawValue)
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .foregroundStyle(.white, .gray)
+                    .symbolRenderingMode(mode)
+                    .symbolEffect(.pulse)
+                    .eraseToAnyView
+            }
         }
     }
 
@@ -122,7 +138,7 @@ extension BlinkView {
         return { reslut in
             let message = reslut().message
             let style = reslut().style
-            if message.image.isEmpty {
+            if message.image.rawValue.isEmpty {
                 return EmptyView().eraseToAnyView
             }
             return systemImage { (message, style) }
@@ -188,7 +204,7 @@ extension BlinkView {
 #Preview {
 
     let style = Style(alignment: .horizontal, padded: .full)
-    BlinkView(message: .init(title: "Data Request", details: "Network loading, request data...."), style: style)
+    BlinkView(message: .init(title: "Data Request", details: "Network loading, request data....", image: .success), style: style)
 
 }
 // MARK: -

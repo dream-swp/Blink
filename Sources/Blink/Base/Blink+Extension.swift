@@ -111,4 +111,26 @@ extension BK where Item == Blink {
         }
     }
 }
-// MARK: - 
+
+extension BK where Item == Color {
+    
+    public static var blinkTitle: Color {
+        Color(.blinkTitle)
+    }
+    
+    public static var blinkDetails: Color {
+        Color(.blinkDetails)
+    }
+    
+    public static var blurBackground: Color {
+        Color(.blurBackground)
+    }
+    
+    public static var blinkBackground: Color {
+        Color(.blinkBackground)
+    }
+    
+    
+}
+
+// MARK: -

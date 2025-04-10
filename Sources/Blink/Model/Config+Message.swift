@@ -23,7 +23,36 @@ public struct Message: Sendable {
     public var details: String = ""
 
     /// Tips image name
-    public var image: String = String.bk.defaultImageSystemName
+    public var image: Message.Image = .default
+
+}
+
+extension Message {
+
+    public enum Image: Sendable {
+        case `default`
+        case info
+        case infoFill
+        case error
+        case errorFill
+        case success
+        case successFill
+        case customize(String)
+
+        var rawValue: String {
+            switch self {
+            case .default: "tree"
+            case .info: "exclamationmark.circle"
+            case .infoFill: "exclamationmark.circle.fill"
+            case .error: "xmark.circle"
+            case .errorFill: "xmark.circle.fill"
+            case .success: "checkmark.circle"
+            case .successFill: "checkmark.circle.fill"
+            case .customize(let value): value
+            }
+        }
+
+    }
 
 }
 // MARK: -

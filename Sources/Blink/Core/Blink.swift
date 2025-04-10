@@ -25,7 +25,7 @@ public struct Blink: View {
     }
 
     public var body: some View {
-        
+
         content { source }
 
             .padding()
@@ -157,11 +157,11 @@ extension Blink {
         return { result in
             let style = result().style
             return VStack {
-                
+
                 if case .bottom = style.position {
                     Spacer()
                 }
-                
+
                 blinkView(result)
 
                 if case .top = style.position {
