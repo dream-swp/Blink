@@ -81,20 +81,12 @@ extension Blink {
         return { result in
             let message = result().message
             let style = result().style
-            #if os(macOS)
-                return BlinkView(message: message, style: style)
-                    .background(style.backgroundColor.opacity(0.6))
-                    .background(.ultraThinMaterial)
-                    .cornerRadius(10)
-                    .opacity(0.7)
-                    .eraseToAnyView
-            #else
-                return BlinkView(message: message, style: style)
-                    .background(style.backgroundColor.opacity(0.8))
-                    .cornerRadius(10)
-                    .eraseToAnyView
-            #endif
-
+            return BlinkView(message: message, style: style)
+                .background(style.backgroundColor)
+                .background(.ultraThinMaterial)
+                .cornerRadius(10)
+                .opacity(0.7)
+                .eraseToAnyView
         }
     }
 
@@ -177,7 +169,7 @@ extension Blink {
 #Preview {
 
     @ObservedObject var `default`: Config =
-        .center { ("Data Reques", "Network loading, request data....") }
+        .info { ("Data Reques", "Network loading, request data....") }
         .display { .init(isHidden: false) }
 
     HStack(spacing: 30) {

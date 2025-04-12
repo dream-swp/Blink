@@ -29,6 +29,7 @@ public struct Message: Sendable {
 
 extension Message {
 
+    /// Default Image
     public enum Image: Sendable {
         case `default`
         case info
@@ -49,6 +50,23 @@ extension Message {
             case .success: "checkmark.circle"
             case .successFill: "checkmark.circle.fill"
             case .customize(let value): value
+            }
+        }
+        
+        /// is reversal color
+        var isReversalColor: Bool {
+            switch self {
+            case .infoFill, .errorFill, .successFill: true
+            default: false
+            }
+        }
+
+        
+        /// is case is `default`
+        var isDefault: Bool {
+            switch self {
+            case .default: true
+            default: false
             }
         }
 

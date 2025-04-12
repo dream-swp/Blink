@@ -96,7 +96,7 @@ extension Config {
     /// Convenient Initialization Config
     /// - Parameters:
     ///   - title:      title
-    ///   - message:    message
+    ///   - details:    message
     public convenience init(title: String, details: String, image: Message.Image? = nil) {
         let data = Message(title: title, details: details, image: image ?? .default)
         self.init(data)
@@ -154,12 +154,14 @@ extension Config {
 // MARK: - Config Convenient Init
 extension Config {
 
+    // private convenient init
     private static var resultValue: (_: () -> (title: String, details: String, image: Message.Image)) -> Config {
         return {
             .init(title: $0().title, details: $0().details, image: $0().image).style { .init(position: .center, padded: .auto) }
         }
     }
-
+ 
+    /// convenient init info information
     public static var info: Result {
         return { result in
             let data = result()
@@ -167,6 +169,7 @@ extension Config {
         }
     }
 
+    /// convenient init info fill information
     public static var infoFill: Result {
         return { result in
             let data = result()
@@ -174,6 +177,7 @@ extension Config {
         }
     }
 
+    /// convenient init error information
     public static var error: Result {
         return { result in
             let data = result()
@@ -181,6 +185,7 @@ extension Config {
         }
     }
 
+    /// convenient init error fill information
     public static var errorFill: Result {
         return { result in
             let data = result()
@@ -188,6 +193,7 @@ extension Config {
         }
     }
 
+    /// convenient init success information
     public static var success: Result {
         return { result in
             let data = result()
@@ -195,6 +201,7 @@ extension Config {
         }
     }
 
+    /// convenient init success fill information
     public static var successFill: Result {
         return { result in
             let data = result()

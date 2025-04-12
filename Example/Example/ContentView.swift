@@ -10,30 +10,61 @@ import SwiftUI
 
 struct ContentView: View {
 
-    @State private var showTopToast = false
+    @ObservedObject var `default`: Config =
+        .default { ("Data Request", "Network loading, request data....") }
+        .display { .default }
+        .style { .default }
+        .blur { .default }
 
-    @ObservedObject var `default`: Config = .info { ("Default", "Default Message") }
+    @ObservedObject var info: Config = .info { ("Information", "数据请求成功，请刷新数据！") }
+    @ObservedObject var infoFill: Config = .infoFill { ("Information Fill", "数据请求成功，请刷新数据！") }.blur { .default }
 
-    @ObservedObject var top: Config = .top { ("Default", "Default Message") }
+    @ObservedObject var success: Config = .success { ("Success", "数据校验成功！请继续下一步操作！") }
+    @ObservedObject var successFill: Config = .successFill { ("Success Fill", "数据校验成功！请继续下一步操作！") }
 
-    @ObservedObject var leading: Config = .leading { ("Default", "Default Message") }
+    @ObservedObject var error: Config = .error { ("Error", "数据操作失败！，请输入正确数据！") }
+    @ObservedObject var errorFill: Config = .errorFill { ("Error Fill", "数据操作失败！，请输入正确数据！") }
 
     var body: some View {
-        HStack(spacing: 30) {
-            Button("`default`") {
-                Blink.bk.display { `default` }
+
+        VStack(spacing: 30) {
+
+            HStack {
+
+                Button("default") {
+                    Blink.bk.display { `default` }
+                }
+
             }
 
-            Button("`top`") {
-                Blink.bk.display { top }
+            HStack {
+                Button("Info") {
+                    Blink.bk.display { info }
+                }
+
+                Button("`InfoFill`") {
+                    Blink.bk.display { infoFill }
+                }
             }
 
-            Button("`center`") {
-                Blink.bk.display { leading }
+            HStack {
+                Button("Success") {
+                    Blink.bk.display { success }
+                }
+
+                Button("`SuccessFill`") {
+                    Blink.bk.display { successFill }
+                }
             }
 
-            Button("`bottom`") {
+            HStack {
+                Button("Error") {
+                    Blink.bk.display { error }
+                }
 
+                Button("`ErrorFill`") {
+                    Blink.bk.display { errorFill }
+                }
             }
 
         }
@@ -41,12 +72,12 @@ struct ContentView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         #endif
         .blink(`default`)
-        .blink(top)
-        .blink(leading)
-        //            .blink(`default`.display.isHidden) {
-        ////                Text("111")
-        //                Blink(config: `default`)
-        //            }
+        .blink(info)
+        .blink(infoFill)
+        .blink(success)
+        .blink(successFill)
+        .blink(error)
+        .blink(errorFill)
     }
 }
 

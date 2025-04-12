@@ -61,7 +61,7 @@ extension BK where Item == Blink {
     }
 
     /// `Blink` animation display
-    /// - Parameter config: `Config
+    /// - Parameter config: `Config`
     public static func display(_ config: Config) {
         withAnimation { config.display.isHidden = false }
     }
@@ -112,25 +112,38 @@ extension BK where Item == Blink {
     }
 }
 
+// MARK: - Blink: Color Extension
 extension BK where Item == Color {
-    
+
+    /// blink title color
     public static var blinkTitle: Color {
         Color(.blinkTitle)
     }
-    
+
+    /// blink details color
     public static var blinkDetails: Color {
         Color(.blinkDetails)
     }
-    
+
+    /// blink blur background color
     public static var blurBackground: Color {
         Color(.blurBackground)
     }
-    
+
+    /// blink view background color
     public static var blinkBackground: Color {
         Color(.blinkBackground)
     }
     
-    
-}
+    /// blink view blink image color 1
+    public static var blinkImage1: Color {
+        Color(.blinkImage1)
+    }
 
+    /// blink view blink image color 2
+    public static var blinkImage2: Color {
+        Color(.blinkImage2)
+    }
+
+}
 // MARK: -

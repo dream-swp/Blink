@@ -54,9 +54,9 @@ extension BlinkView {
                 return title.eraseToAnyView
             }
             return Text(LocalizedStringKey(message.title))
-                .font(.subheadline)
+                .font(.headline)
                 .fontWeight(.bold)
-                .foregroundStyle(Color.bk.blinkTitle)
+                .foregroundStyle(BK.blinkTitle)
                 .eraseToAnyView
         }
     }
@@ -71,8 +71,9 @@ extension BlinkView {
                 return details.eraseToAnyView
             }
             return Text(LocalizedStringKey(message.details))
-                .font(.subheadline)
-                .foregroundStyle(Color.bk.blinkDetails)
+                .font(.footnote)
+                .fontWeight(.bold)
+                .foregroundStyle(BK.blinkDetails)
                 .eraseToAnyView
         }
     }
@@ -87,23 +88,28 @@ extension BlinkView {
                 return image.eraseToAnyView
             }
             var mode: SymbolRenderingMode? = nil
-            if case .default = message.image {
+
+            if message.image.isDefault {
                 mode = .multicolor
             }
+            let color1 = message.image.isReversalColor ? BK.blinkImage2 : BK.blinkImage1
+            let color2 = BK.blinkImage1
 
             if #available(macOS 15.0, iOS 18.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, *) {
-                return Image(systemName: message.image.rawValue)
+                return
+                    Image(systemName: message.image.rawValue)
                     .font(.title)
                     .fontWeight(.bold)
-                    .foregroundStyle(.white, .gray)
                     .symbolRenderingMode(mode)
+                    .foregroundStyle(color1, color2)
                     .symbolEffect(.pulse.wholeSymbol, options: .repeat(.continuous))
                     .eraseToAnyView
             } else {
-                return Image(systemName: message.image.rawValue)
+                return
+                    Image(systemName: message.image.rawValue)
                     .font(.title)
                     .fontWeight(.bold)
-                    .foregroundStyle(.white, .gray)
+                    .foregroundStyle(BK.blinkImage1, BK.blinkImage2)
                     .symbolRenderingMode(mode)
                     .symbolEffect(.pulse)
                     .eraseToAnyView
@@ -120,7 +126,7 @@ extension BlinkView {
             if data.title.isEmpty && data.details.isEmpty {
                 return EmptyView().eraseToAnyView
             }
-            return VStack(alignment: reslut().alignment, spacing: 3) {
+            return VStack(alignment: reslut().alignment, spacing: 5) {
                 if !data.title.isEmpty {
                     title { (data, style) }
                 }
@@ -204,7 +210,8 @@ extension BlinkView {
 #Preview {
 
     let style = Style(alignment: .horizontal, padded: .full)
-    BlinkView(message: .init(title: "Data Request", details: "Network loading, request data....", image: .success), style: style)
+    BlinkView(message: .init(title: "Data Request", details: "Network loading, request data....", image: .info), style: style)
+        .background(.black).opacity(0.8)
 
 }
 // MARK: -
